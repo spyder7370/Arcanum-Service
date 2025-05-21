@@ -1,6 +1,6 @@
-use std::sync::Arc;
+use crate::models::tenant::Tenant;
 use serde::{Deserialize, Serialize};
-use crate::models::tenet::Tenet;
+use std::sync::Arc;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Attribute {
@@ -8,5 +8,5 @@ pub struct Attribute {
     pub name: String,
     pub parent: Option<Arc<Attribute>>,
     pub children: Vec<Arc<Attribute>>,
-    pub tenet: Arc<Tenet>,
+    pub tenant: Arc<Tenant>,
 }
