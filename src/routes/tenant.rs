@@ -1,9 +1,7 @@
-use crate::models::json_response::JsonResultResponse;
 use crate::models::tenant::{Tenant, TenantRequest};
+use crate::utils::response_utils::{generate_error, generate_response};
 use axum::Json;
 use axum::extract::State;
-use axum::headers::Te;
-use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use sqlx::SqlitePool;
 use uuid::Uuid;
@@ -23,7 +21,7 @@ pub async fn add_tenant(
     .execute(&pool)
     .await;
 
-    match result {
+    let response = match result {
         Ok(_) => {
             let tenant = Tenant {
                 id: tenant_id,
@@ -31,14 +29,11 @@ pub async fn add_tenant(
                 image: tenant_request.image,
                 description: tenant_request.description,
             };
-            (StatusCode::CREATED, Json(tenant)).into_response()
+            generate_response(tenant, Some(201)).await
         }
-        Err(err) => (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(serde_json::json!({"error":err.to_string()})),
-        )
-            .into_response(),
-    }
+        Err(err) => generate_error(Some(err.to_string()), None).await,
+    };
+    response
 }
 
 pub async fn get_tenants(State(pool): State<SqlitePool>) -> impl IntoResponse {
@@ -56,18 +51,9 @@ pub async fn get_tenants(State(pool): State<SqlitePool>) -> impl IntoResponse {
                 };
                 result.push(t);
             }
-            JsonResultResponse {
-                status: "SUCCESS".to_string(),
-                result: Option::from(result),
-                error: None,
-            }
+            generate_response(result, None).await
         }
-        Err(err) => JsonResultResponse {
-            status: "ERROR".to_string(),
-            result: None,
-            error: Some(err.to_string()),
-        },
+        Err(err) => generate_error(Some(err.to_string()), None).await,
     };
-    Json(response)
-    // JsonResultResponse<>
+    response
 }

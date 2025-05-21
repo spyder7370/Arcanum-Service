@@ -1,9 +1,6 @@
+use crate::{models::json_response::GenericResponse, utils::response_utils::generate_response};
 use axum::Json;
-use crate::GenericResponse;
 
 pub async fn health() -> Json<GenericResponse> {
-    let response = GenericResponse {
-        message: "OK".to_string(),
-    };
-    Json(response)
+    generate_response("OK", None).await
 }

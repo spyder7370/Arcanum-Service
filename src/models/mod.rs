@@ -1,4 +1,4 @@
-pub mod tenant;
+pub mod attribute;
 pub mod character;
-pub mod Attribute;
 pub mod json_response;
+pub mod tenant;
