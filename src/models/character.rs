@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use serde::{Deserialize, Serialize};
-use crate::models::tenet::Tenet;
+use crate::models::tenant::Tenant;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Character {
@@ -9,5 +9,5 @@ pub struct Character {
     pub description: Option<String>,
     pub image: String,
     pub guide_available: bool,
-    pub tenet: Arc<Tenet>
+    pub tenant: Arc<Tenant>
 }
