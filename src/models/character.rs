@@ -9,5 +9,20 @@ pub struct Character {
     pub description: Option<String>,
     pub image: String,
     pub guide_available: bool,
-    pub tenet: Arc<Tenet>
+    // pub tenet: Arc<Tenet>
+}
+
+#[derive(Debug, Deserialize)]
+pub struct GetAllCharactersRequest {
+    pub tenet_id: String,
+}
+
+#[derive(Debug,Deserialize)]
+pub struct AddCharacterRequest {
+    pub tenet_id: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub image: String,
+    pub guide_available: Option<bool>,
+    
 }

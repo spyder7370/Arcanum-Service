@@ -10,3 +10,19 @@ pub struct Attribute {
     pub children: Vec<Arc<Attribute>>,
     pub tenet: Arc<Tenet>,
 }
+
+// create table if not exists attributes (
+// id text primary key,
+// tenet_id text references tenet(id),
+// name text not null unique,
+// parent_attribute_id text,
+// preference integer,
+// foreign key (parent_attribute_id) references attributes(id)
+// id);
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AddAttributeRequest {
+   pub tenet_id: String,
+    pub name: String,
+    pub parent_attribute_id: Option<String>,
+    pub preference: Option<i32>,
+}

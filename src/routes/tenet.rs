@@ -48,14 +48,16 @@ pub async fn get_tenets(State(pool):State<SqlitePool>) -> impl IntoResponse {
             JsonResultResponse{
                 status:"SUCCESS".to_string(),
                 result: Option::from(result),
-                error: None
+                error: None,
+                status_code: StatusCode::OK,
             }
         },
         Err(err) => {
             JsonResultResponse{
                 status:"ERROR".to_string(),
                 result: None,
-                error: Some(err.to_string())
+                error: Some(err.to_string()),
+                status_code: StatusCode::INTERNAL_SERVER_ERROR,
             }
         }
     }; 
